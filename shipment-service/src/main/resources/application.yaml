@@ -1,0 +1,13 @@
+spring:
+  application:
+    name:"shipment-service"
+  datasource:
+    url: "jdbc:postgresql://localhost:5433/shipment-service"
+    username: postgres
+    password: test
+  jpa:
+    showSql: true
+    hibernate:
+      ddlAuto: update
+server:
+  port: 8083
