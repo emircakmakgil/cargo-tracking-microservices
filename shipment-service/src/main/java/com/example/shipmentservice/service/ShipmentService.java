@@ -17,11 +17,11 @@ public interface ShipmentService {
     List<Shipments> findAll(List<UUID> shipmentId);
     Shipments findById(UUID id);
     void addReceiverShipment(CreateReceiverShipmentDto createReceiverShipmentDto);
-    List<ReceiverShipmentListiningDto> getReceiverShipmentDto();
+    List<ReceiverShipmentListiningDto> getReceiverShipmentAll();
     Shipments updateReceiverShipment(UpdateReceiverShipmentDto updateReceiverShipmentDto);
     void deleteReceiverShipment(DeleteReceiverShipmentDto deleteReceiverShipmentDto);
     void addSenderShipment(CreateSenderShipmentDto createSenderShipmentDto);
-    List<SenderShipmentListiningDto> getSenderShipmentDto();
+    List<SenderShipmentListiningDto> getSenderShipmentAll();
     Shipments updateSenderShipment(UpdateSenderShipmentDto updateSenderShipmentDto);
     void deleteSenderShipment(DeleteSenderShipmentDto deleteSenderShipmentDto);
 

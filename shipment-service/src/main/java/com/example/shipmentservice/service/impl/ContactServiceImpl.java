@@ -1,5 +1,6 @@
 package com.example.shipmentservice.service.impl;
 
+import com.example.shipmentservice.core.exception.type.BusinessException;
 import com.example.shipmentservice.data.dto.ContactDto.ContactListiningDto;
 import com.example.shipmentservice.data.dto.ContactDto.CreateContactDto;
 import com.example.shipmentservice.data.dto.ContactDto.DeleteContactDto;
@@ -34,7 +35,7 @@ public class ContactServiceImpl implements ContactService {
 
     @Override
     public Contact findById(UUID id) {
-        return contactRepository.findById(id).orElseThrow(()-> new RuntimeException(CONTACT_NOT_FOUND + id));
+        return contactRepository.findById(id).orElseThrow(()-> new BusinessException(CONTACT_NOT_FOUND + id));
     }
 
     @Override

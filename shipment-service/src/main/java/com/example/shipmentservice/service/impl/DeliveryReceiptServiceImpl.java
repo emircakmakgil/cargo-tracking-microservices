@@ -1,5 +1,6 @@
 package com.example.shipmentservice.service.impl;
 
+import com.example.shipmentservice.core.exception.type.BusinessException;
 import com.example.shipmentservice.data.dto.DeliveryReceipt.CreateDeliveryReceiptDto;
 import com.example.shipmentservice.data.dto.DeliveryReceipt.DeleteDeliveryReceiptDto;
 import com.example.shipmentservice.data.dto.DeliveryReceipt.DeliveryReceiptListiningDto;
@@ -33,7 +34,7 @@ public class DeliveryReceiptServiceImpl implements DeliveryReceiptService {
 
     @Override
     public DeliveryReceipt findById(UUID id) {
-        return deliveryReceiptRepository.findById(id).orElseThrow(()-> new RuntimeException(DELIVERY_RECEIPT_NOT_FOUND));
+        return deliveryReceiptRepository.findById(id).orElseThrow(()-> new BusinessException(DELIVERY_RECEIPT_NOT_FOUND));
 
     }
 
@@ -46,14 +47,14 @@ public class DeliveryReceiptServiceImpl implements DeliveryReceiptService {
 
     @Override
     public DeliveryReceipt update(UpdateDeliveryReceiptDto updateDeliveryReceiptDto) {
-        DeliveryReceipt deliveryReceipt=deliveryReceiptRepository.findById(updateDeliveryReceiptDto.getId()).orElseThrow(()-> new RuntimeException(DELIVERY_RECEIPT_NOT_FOUND));
+        DeliveryReceipt deliveryReceipt=deliveryReceiptRepository.findById(updateDeliveryReceiptDto.getId()).orElseThrow(()-> new BusinessException(DELIVERY_RECEIPT_NOT_FOUND));
         deliveryReceiptMapper.updateDeliveryReceiptFromUpdateDeliveryReceiptDto(updateDeliveryReceiptDto,deliveryReceipt);
         return deliveryReceipt;
     }
 
     @Override
     public void delete(DeleteDeliveryReceiptDto deleteDeliveryReceiptDto) {
-        DeliveryReceipt deliveryReceipt=deliveryReceiptRepository.findById(deleteDeliveryReceiptDto.getId()).orElseThrow(()-> new RuntimeException(DELIVERY_RECEIPT_NOT_FOUND));
+        DeliveryReceipt deliveryReceipt=deliveryReceiptRepository.findById(deleteDeliveryReceiptDto.getId()).orElseThrow(()-> new BusinessException(DELIVERY_RECEIPT_NOT_FOUND));
         deliveryReceiptRepository.saveAndFlush(deliveryReceipt);
     }
 
