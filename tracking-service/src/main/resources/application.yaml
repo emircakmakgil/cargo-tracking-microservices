@@ -1,0 +1,27 @@
+spring:
+  application:
+    name: tracking-service
+
+  datasource:
+    url: jdbc:postgresql://localhost:5435/tracking-service
+    username: postgres
+    password: test
+    driver-class-name: org.postgresql.Driver
+
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+
+server:
+  port: 8082
+
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8888/eureka/
+    register-with-eureka: true
+    fetch-registry: true
