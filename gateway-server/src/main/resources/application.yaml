@@ -18,3 +18,10 @@ spring:
             - "Path=/api/v1/notification/**"
   config:
     import: "optional:configserver:"
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://localhost:8888/eureka/"
+    register-with-eureka: true
+    fetch-registry: true

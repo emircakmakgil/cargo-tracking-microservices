@@ -1,6 +1,7 @@
 spring:
   application:
-    name:"shipment-service"
+    name: "shipment-service"
+
   datasource:
     url: "jdbc:postgresql://localhost:5433/shipment-service"
     username: postgres
@@ -11,3 +12,10 @@ spring:
       ddlAuto: update
 server:
   port: 8083
+
+eureka:
+  client:
+    service-url:
+      defaultZone: "http://localhost:8888/eureka/"
+    register-with-eureka: true
+    fetch-registry: true
