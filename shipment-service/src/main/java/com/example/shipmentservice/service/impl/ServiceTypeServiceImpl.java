@@ -1,5 +1,6 @@
 package com.example.shipmentservice.service.impl;
 
+import com.example.shipmentservice.core.exception.type.BusinessException;
 import com.example.shipmentservice.data.dto.ServiceTypeDto.CreateServiceTypeDto;
 import com.example.shipmentservice.data.dto.ServiceTypeDto.DeleteServiceTypeDto;
 import com.example.shipmentservice.data.dto.ServiceTypeDto.ServiceTypeListiningDto;
@@ -33,7 +34,7 @@ public class ServiceTypeServiceImpl implements ServiceTypeService{
 
     @Override
     public ServiceType findById(UUID id) {
-        return serviceTypeRepository.findById(id).orElseThrow(()-> new RuntimeException(SERVICE_TYPE_NOT_FOUND +" : "+id));
+        return serviceTypeRepository.findById(id).orElseThrow(()-> new BusinessException(SERVICE_TYPE_NOT_FOUND +" : "+id));
     }
 
     @Override
@@ -50,14 +51,14 @@ public class ServiceTypeServiceImpl implements ServiceTypeService{
 
     @Override
     public ServiceType update(UpdateServiceTypeDto updateServiceTypeDto) {
-        ServiceType serviceType=serviceTypeRepository.findById(updateServiceTypeDto.getId()).orElseThrow(()-> new RuntimeException(SERVICE_TYPE_NOT_FOUND+ " : "+updateServiceTypeDto.getId()));
+        ServiceType serviceType=serviceTypeRepository.findById(updateServiceTypeDto.getId()).orElseThrow(()-> new BusinessException(SERVICE_TYPE_NOT_FOUND+ " : "+updateServiceTypeDto.getId()));
         serviceTypeMapper.updateServiceTypeFromUpdatedServiceTypeDto(updateServiceTypeDto,serviceType);
         return serviceType;
     }
 
     @Override
     public void delete(DeleteServiceTypeDto deleteServiceTypeDto) {
-        ServiceType serviceType=serviceTypeRepository.findById(deleteServiceTypeDto.getId()).orElseThrow(()-> new RuntimeException(SERVICE_TYPE_NOT_FOUND+" : "+ deleteServiceTypeDto.getId()));
+        ServiceType serviceType=serviceTypeRepository.findById(deleteServiceTypeDto.getId()).orElseThrow(()-> new BusinessException(SERVICE_TYPE_NOT_FOUND+" : "+ deleteServiceTypeDto.getId()));
         serviceTypeRepository.saveAndFlush(serviceType);
     }
 }

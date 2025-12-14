@@ -1,6 +1,7 @@
 package com.example.shipmentservice.service.impl;
 
 
+import com.example.shipmentservice.core.exception.type.BusinessException;
 import com.example.shipmentservice.data.dto.PackageDto.CreatePackageDto;
 import com.example.shipmentservice.data.dto.PackageDto.DeletePackageDto;
 import com.example.shipmentservice.data.dto.PackageDto.PackageListiningDto;
@@ -34,7 +35,7 @@ public class PackageServiceImpl implements PackageService {
 
     @Override
     public Package findById(UUID id) {
-        return packageRepository.findById(id).orElseThrow(()-> new RuntimeException(PACKAGE_NOT_FOUND +" : "+id));
+        return packageRepository.findById(id).orElseThrow(()-> new BusinessException(PACKAGE_NOT_FOUND +" : "+id));
     }
 
     @Override
@@ -52,14 +53,14 @@ public class PackageServiceImpl implements PackageService {
 
     @Override
     public Package update(UpdatePackageDto updatePackageDto) {
-        Package packages=packageRepository.findById(updatePackageDto.getId()).orElseThrow(()->new RuntimeException(PACKAGE_NOT_FOUND +" : "+updatePackageDto.getId()));
+        Package packages=packageRepository.findById(updatePackageDto.getId()).orElseThrow(()->new BusinessException(PACKAGE_NOT_FOUND +" : "+updatePackageDto.getId()));
         packageMapper.updatePackageFromUpdatePackageDto(updatePackageDto,packages);
         return packages;
     }
 
     @Override
     public void delete(DeletePackageDto deletePackageDto) {
-        Package packages=packageRepository.findById(deletePackageDto.getId()).orElseThrow(()-> new RuntimeException(PACKAGE_NOT_FOUND +" : "+deletePackageDto.getId()));
+        Package packages=packageRepository.findById(deletePackageDto.getId()).orElseThrow(()-> new BusinessException(PACKAGE_NOT_FOUND +" : "+deletePackageDto.getId()));
         packageRepository.saveAndFlush(packages);
     }
 

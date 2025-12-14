@@ -16,7 +16,7 @@ public class ShipmentMapper {
     public Shipments createReceiverShipmentFromCreateReceiverShipmentDto(CreateReceiverShipmentDto createReceiverShipmentDto){
         return Shipments.builder()
                 .trackingNumber(createReceiverShipmentDto.getTrackingNumber())
-                .statusCode(createReceiverShipmentDto.getStatusCode())
+                .shipmentLifecycleStatus(createReceiverShipmentDto.getShipmentLifecycleStatus())
                 .estimateDeliveryDate(createReceiverShipmentDto.getEstimateDeliveryDate())
                 .isPaid(createReceiverShipmentDto.getIsPaid())
                   .build();
@@ -24,7 +24,7 @@ public class ShipmentMapper {
 
     public void updateReceiverShipmentFromUpdateReceiverShipmentDto(UpdateReceiverShipmentDto updateReceiverShipmentDto,Shipments shipments){
         shipments.setTrackingNumber(updateReceiverShipmentDto.getTrackingNumber());
-        shipments.setStatusCode(updateReceiverShipmentDto.getStatusCode());
+        shipments.setShipmentLifecycleStatus(updateReceiverShipmentDto.getShipmentLifecycleStatus());
         shipments.setEstimateDeliveryDate(updateReceiverShipmentDto.getEstimateDeliveryDate());
         shipments.setEstimateDeliveryDate(updateReceiverShipmentDto.getEstimateDeliveryDate());
         shipments.setIsPaid(updateReceiverShipmentDto.getIsPaid());
@@ -33,7 +33,7 @@ public class ShipmentMapper {
     public ReceiverShipmentListiningDto toReceiverShipmentListiningDto(Shipments shipments){
         return new ReceiverShipmentListiningDto(
                 shipments.getTrackingNumber(),
-                shipments.getStatusCode(),
+                shipments.getShipmentLifecycleStatus(),
                 shipments.getEstimateDeliveryDate(),
                 shipments.getIsPaid()
         );
@@ -41,7 +41,7 @@ public class ShipmentMapper {
     public Shipments createSenderShipmentFromCreateReceiverShipmentDto(CreateSenderShipmentDto createSenderShipmentDto){
         return Shipments.builder()
                 .trackingNumber(createSenderShipmentDto.getTrackingNumber())
-                .statusCode(createSenderShipmentDto.getStatusCode())
+                .shipmentLifecycleStatus(createSenderShipmentDto.getShipmentLifecycleStatus())
                 .estimateDeliveryDate(createSenderShipmentDto.getEstimateDeliveryDate())
                 .isPaid(createSenderShipmentDto.getIsPaid())
                 .build();
@@ -49,7 +49,7 @@ public class ShipmentMapper {
 
     public void updateSenderShipmentFromUpdateReceiverShipmentDto(UpdateSenderShipmentDto updateSenderShipmentDto, Shipments shipments){
         shipments.setTrackingNumber(updateSenderShipmentDto.getTrackingNumber());
-        shipments.setStatusCode(updateSenderShipmentDto.getStatusCode());
+        shipments.setShipmentLifecycleStatus(updateSenderShipmentDto.getShipmentLifecycleStatus());
         shipments.setEstimateDeliveryDate(updateSenderShipmentDto.getEstimateDeliveryDate());
         shipments.setEstimateDeliveryDate(updateSenderShipmentDto.getEstimateDeliveryDate());
         shipments.setIsPaid(updateSenderShipmentDto.getIsPaid());
@@ -58,7 +58,7 @@ public class ShipmentMapper {
     public SenderShipmentListiningDto toSenderShipmentListiningDto(Shipments shipments){
         return new SenderShipmentListiningDto(
                 shipments.getTrackingNumber(),
-                shipments.getStatusCode(),
+                shipments.getShipmentLifecycleStatus(),
                 shipments.getEstimateDeliveryDate(),
                 shipments.getIsPaid()
         );

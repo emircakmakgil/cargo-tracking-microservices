@@ -1,6 +1,6 @@
 package com.example.shipmentservice.data.dto.ShipmentDto.ReceiverDto;
 
-import com.example.shipmentservice.model.enums.StatusCode;
+import com.example.shipmentservice.model.enums.ShipmentLifecycleStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +13,7 @@ public class CreateReceiverShipmentDto {
     
     private String trackingNumber;
     
-    private StatusCode statusCode;
+    private ShipmentLifecycleStatus shipmentLifecycleStatus;
     
     private LocalDateTime estimateDeliveryDate;
 

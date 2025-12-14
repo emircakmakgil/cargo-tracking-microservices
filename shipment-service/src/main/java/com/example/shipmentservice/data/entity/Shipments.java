@@ -2,7 +2,7 @@ package com.example.shipmentservice.data.entity;
 
 import com.example.shipmentservice.model.AbstractEntity;
 
-import com.example.shipmentservice.model.enums.StatusCode;
+import com.example.shipmentservice.model.enums.ShipmentLifecycleStatus;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.NotNull;
@@ -32,7 +32,7 @@ public class Shipments extends AbstractEntity {
     private String trackingNumber;
 
     @NotNull(message = "Status code is required")
-    private StatusCode statusCode;
+    private ShipmentLifecycleStatus shipmentLifecycleStatus;
 
     @NotNull(message = "Service type is required")
     @ManyToOne

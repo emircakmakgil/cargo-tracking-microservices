@@ -1,5 +1,6 @@
 package com.example.shipmentservice.service.impl;
 
+import com.example.shipmentservice.core.exception.type.BusinessException;
 import com.example.shipmentservice.data.dto.LocationDto.CreateLocationDto;
 import com.example.shipmentservice.data.dto.LocationDto.DeleteLocationDto;
 import com.example.shipmentservice.data.dto.LocationDto.LocationListiningDto;
@@ -33,7 +34,7 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public Location findById(UUID id) {
-        return locationRepository.findById(id).orElseThrow(()-> new RuntimeException(LOCATION_NOT_FOUND + id));
+        return locationRepository.findById(id).orElseThrow(()-> new BusinessException(LOCATION_NOT_FOUND + id));
     }
 
     @Override
@@ -51,14 +52,14 @@ public class LocationServiceImpl implements LocationService {
 
     @Override
     public Location update(UpdateLocationDto updateLocationDto) {
-        Location location =locationRepository.findById(updateLocationDto.getId()).orElseThrow(()->new RuntimeException(LOCATION_NOT_FOUND));
+        Location location =locationRepository.findById(updateLocationDto.getId()).orElseThrow(()->new BusinessException(LOCATION_NOT_FOUND));
         locationMapper.updateLocationFromUpdateLocationDto(updateLocationDto,location);
         return location;
     }
 
     @Override
     public void delete(DeleteLocationDto deleteLocationDto) {
-        Location location=locationRepository.findById(deleteLocationDto.getId()).orElseThrow(()-> new RuntimeException(LOCATION_NOT_FOUND));
+        Location location=locationRepository.findById(deleteLocationDto.getId()).orElseThrow(()-> new BusinessException(LOCATION_NOT_FOUND));
         locationRepository.delete(location);
     }
 }

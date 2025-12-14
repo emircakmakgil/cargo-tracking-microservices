@@ -1,7 +1,6 @@
 package com.example.shipmentservice.data.dto.ShipmentDto.ReceiverDto;
 
-import com.example.shipmentservice.model.enums.StatusCode;
-import jakarta.validation.constraints.NotNull;
+import com.example.shipmentservice.model.enums.ShipmentLifecycleStatus;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -13,7 +12,7 @@ import java.util.UUID;
 public class UpdateReceiverShipmentDto {
     private UUID id;
     private String trackingNumber;
-    private StatusCode statusCode;
+    private ShipmentLifecycleStatus shipmentLifecycleStatus;
     private LocalDateTime estimateDeliveryDate;
 
     private UUID senderContactId;

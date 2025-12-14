@@ -74,7 +74,7 @@ public class ShipmentServiceImpl implements ShipmentService {
 
 
     @Override
-    public List<ReceiverShipmentListiningDto> getReceiverShipmentDto() {
+    public List<ReceiverShipmentListiningDto> getReceiverShipmentAll() {
         List<Shipments> shipments=shipmentRepository.findAll();
         return shipments.stream().map(shipmentMapper::toReceiverShipmentListiningDto).filter(dto -> dto.getReceiverContactId()!=null).collect(Collectors.toList());
     }
@@ -133,7 +133,7 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
-    public List<SenderShipmentListiningDto> getSenderShipmentDto() {
+    public List<SenderShipmentListiningDto> getSenderShipmentAll() {
         List<Shipments> shipments=shipmentRepository.findAll();
         return shipments.stream().map(shipmentMapper::toSenderShipmentListiningDto).filter(dto->dto.getSenderContactId() !=null).collect(Collectors.toList());
     }
