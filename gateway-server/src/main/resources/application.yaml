@@ -1,0 +1,20 @@
+spring:
+  application:
+    name:  "gateway-server"
+  cloud:
+    gateway:
+      routes:
+        - id: "shipment_service"
+          uri: "lb://shipment_service"
+          predicates:
+            - "Path=/api/v1/shipment/**"
+        - id: "tracking_service"
+          uri: "lb://tracking_service"
+          predicates:
+            - "Path=/api/v1/tracking/**"
+        - id: "notification_service"
+          uri: "lb://notification_service"
+          predicates:
+            - "Path=/api/v1/notification/**"
+  config:
+    import: "optional:configserver:"
