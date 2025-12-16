@@ -1,4 +1,4 @@
-package com.example.shipmentservice.model;
+package com.example.trackingservice.model;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.EntityListeners;
@@ -14,6 +14,7 @@ import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 import java.io.Serializable;
 import java.time.LocalDateTime;
 import java.util.UUID;
+
 
 @Getter
 @Setter
@@ -45,8 +46,3 @@ public abstract class AbstractEntity implements Serializable {
         return deleted;
     }
 }
-
-
-
-
-

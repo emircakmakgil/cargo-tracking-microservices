@@ -1,13 +1,10 @@
 package com.example.shipmentservice.service.impl;
 
-import com.example.shipmentservice.data.dto.ShipmentDto.ReceiverDto.CreateReceiverShipmentDto;
-import com.example.shipmentservice.data.dto.ShipmentDto.ReceiverDto.DeleteReceiverShipmentDto;
-import com.example.shipmentservice.data.dto.ShipmentDto.ReceiverDto.ReceiverShipmentListiningDto;
-import com.example.shipmentservice.data.dto.ShipmentDto.ReceiverDto.UpdateReceiverShipmentDto;
-import com.example.shipmentservice.data.dto.ShipmentDto.SenderDto.CreateSenderShipmentDto;
-import com.example.shipmentservice.data.dto.ShipmentDto.SenderDto.DeleteSenderShipmentDto;
-import com.example.shipmentservice.data.dto.ShipmentDto.SenderDto.SenderShipmentListiningDto;
-import com.example.shipmentservice.data.dto.ShipmentDto.SenderDto.UpdateSenderShipmentDto;
+import com.example.shipmentservice.core.exception.type.BusinessException;
+import com.example.shipmentservice.data.dto.ShipmentDto.CreateShipmentDto;
+import com.example.shipmentservice.data.dto.ShipmentDto.DeleteShipmentDto;
+import com.example.shipmentservice.data.dto.ShipmentDto.ShipmentListiningDto;
+import com.example.shipmentservice.data.dto.ShipmentDto.UpdateShipmentDto;
 import com.example.shipmentservice.data.entity.*;
 import com.example.shipmentservice.data.entity.Package;
 import com.example.shipmentservice.mapper.ShipmentMapper;
@@ -48,23 +45,33 @@ public class ShipmentServiceImpl implements ShipmentService {
 
     @Override
     public Shipments findById(UUID id) {
-        return shipmentRepository.findById(id).orElseThrow(()-> new RuntimeException(SHIPMENT_TYPE_NOT_FOUND +" : "+id));
+        return shipmentRepository.findById(id).orElseThrow(()-> new BusinessException(SHIPMENT_TYPE_NOT_FOUND +" : "+id));
     }
 
     @Override
-    public void addReceiverShipment(CreateReceiverShipmentDto createReceiverShipmentDto) {
-        Contact contact = contactService.findById(createReceiverShipmentDto.getReceiverContactId());
-        Location location=locationService.findById(createReceiverShipmentDto.getLocationId());
-        ServiceType serviceType=serviceTypeService.findById(createReceiverShipmentDto.getServiceTypeId());
-        DeliveryReceipt deliveryReceipt=deliveryReceiptService.findById(createReceiverShipmentDto.getDeliveryReceiptId());
-        Package packages=packageService.findById(createReceiverShipmentDto.getPackageId());
-        if (contact == null) {
-            throw new RuntimeException(RECEIVER_NOT_FOUND);
+    public void add(CreateShipmentDto createShipmentDto) {
+        Contact receiver = contactService.findById(createShipmentDto.getReceiverContactId());
+        Contact sender   = contactService.findById(createShipmentDto.getSenderContactId());
+        Location location=locationService.findById(createShipmentDto.getLocationId());
+        ServiceType serviceType=serviceTypeService.findById(createShipmentDto.getServiceTypeId());
+        DeliveryReceipt deliveryReceipt=deliveryReceiptService.findById(createShipmentDto.getDeliveryReceiptId());
+        Package packages=packageService.findById(createShipmentDto.getPackageId());
+        if (receiver == null) {
+            throw new BusinessException(RECEIVER_NOT_FOUND);
         }
 
+        if (sender == null) {
+            throw new BusinessException(SENDER_NOT_FOUND);
+        }
+        if (sender.getId().equals(receiver.getId())) {
+            throw new BusinessException(SENDER_AND_RECEIVER_CANNOT_BE_SAME);
+        }
+
+
         Shipments shipments = shipmentMapper
-                .createReceiverShipmentFromCreateReceiverShipmentDto(createReceiverShipmentDto);
-        shipments.setReceiverContact(contact);
+                .createShipmentFromCreateReceiverShipmentDto(createShipmentDto);
+        shipments.setReceiverContact(receiver);
+        shipments.setSenderContact(sender);
         shipments.setLocation(location);
         shipments.setServiceType(serviceType);
         shipments.setDeliveryReceipt(deliveryReceipt);
@@ -74,25 +81,46 @@ public class ShipmentServiceImpl implements ShipmentService {
 
 
     @Override
-    public List<ReceiverShipmentListiningDto> getReceiverShipmentAll() {
+    public List<ShipmentListiningDto> getAll() {
         List<Shipments> shipments=shipmentRepository.findAll();
-        return shipments.stream().map(shipmentMapper::toReceiverShipmentListiningDto).filter(dto -> dto.getReceiverContactId()!=null).collect(Collectors.toList());
+        return shipments.stream().map(shipmentMapper::toShipmentListiningDto).filter(dto -> dto.getReceiverContactId()!=null).collect(Collectors.toList());
     }
 
     @Override
-    public Shipments updateReceiverShipment(UpdateReceiverShipmentDto updateReceiverShipmentDto) {
-        Contact contact = contactService.findById(updateReceiverShipmentDto.getReceiverContactId());
-        Location location=locationService.findById(updateReceiverShipmentDto.getLocationId());
-        ServiceType serviceType=serviceTypeService.findById(updateReceiverShipmentDto.getServiceTypeId());
-        DeliveryReceipt deliveryReceipt=deliveryReceiptService.findById(updateReceiverShipmentDto.getDeliveryReceiptId());
-        Package packages=packageService.findById(updateReceiverShipmentDto.getPackageId());
+    public List<ShipmentListiningDto> getReceiverShipment(UUID id) {
+        List<Shipments> shipments =
+                shipmentRepository.getReceiverShipment(id);
+
+        return shipments.stream()
+                .map(shipmentMapper::toShipmentListiningDto)
+                .toList();
+    }
+
+    @Override
+    public List<ShipmentListiningDto> getSenderShipment(UUID id) {
+        List<Shipments> shipments =
+                shipmentRepository.getSenderShipment(id);
+
+        return shipments.stream()
+                .map(shipmentMapper::toShipmentListiningDto)
+                .toList();
+    }
+
+
+    @Override
+    public Shipments update(UpdateShipmentDto updateShipmentDto) {
+        Contact contact = contactService.findById(updateShipmentDto.getReceiverContactId());
+        Location location=locationService.findById(updateShipmentDto.getLocationId());
+        ServiceType serviceType=serviceTypeService.findById(updateShipmentDto.getServiceTypeId());
+        DeliveryReceipt deliveryReceipt=deliveryReceiptService.findById(updateShipmentDto.getDeliveryReceiptId());
+        Package packages=packageService.findById(updateShipmentDto.getPackageId());
 
         if (contact == null) {
-            throw new RuntimeException(RECEIVER_NOT_FOUND);
+            throw new BusinessException(RECEIVER_NOT_FOUND);
         }
 
-        Shipments shipments=shipmentRepository.findById(updateReceiverShipmentDto.getId()).orElseThrow(()-> new RuntimeException(SHIPMENT_TYPE_NOT_FOUND+ " : "+updateReceiverShipmentDto.getId()));
-        shipmentMapper.updateReceiverShipmentFromUpdateReceiverShipmentDto(updateReceiverShipmentDto,shipments);
+        Shipments shipments=shipmentRepository.findById(updateShipmentDto.getId()).orElseThrow(()-> new BusinessException(SHIPMENT_TYPE_NOT_FOUND+ " : "+ updateShipmentDto.getId()));
+        shipmentMapper.updateShipmentFromUpdateReceiverShipmentDto(updateShipmentDto,shipments);
         shipments.setReceiverContact(contact);
         shipments.setLocation(location);
         shipments.setServiceType(serviceType);
@@ -102,64 +130,14 @@ public class ShipmentServiceImpl implements ShipmentService {
     }
 
     @Override
-    public void deleteReceiverShipment(DeleteReceiverShipmentDto deleteReceiverShipmentDto) {
-        Contact contact = contactService.findById(deleteReceiverShipmentDto.getReceiverContactId());
+    public void delete(DeleteShipmentDto deleteShipmentDto) {
+        Contact contact = contactService.findById(deleteShipmentDto.getReceiverContactId());
 
         if(contact == null){
-            throw new RuntimeException(RECEIVER_NOT_FOUND);
+            throw new BusinessException(RECEIVER_NOT_FOUND);
         }
 
-        Shipments shipments=shipmentRepository.findById(deleteReceiverShipmentDto.getId()).orElseThrow(()-> new RuntimeException(SHIPMENT_TYPE_NOT_FOUND+ " : "+deleteReceiverShipmentDto.getId()));
+        Shipments shipments=shipmentRepository.findById(deleteShipmentDto.getId()).orElseThrow(()-> new BusinessException(SHIPMENT_TYPE_NOT_FOUND+ " : "+ deleteShipmentDto.getId()));
         shipmentRepository.delete(shipments);
-    }
-
-
-
-    @Override
-    public void addSenderShipment(CreateSenderShipmentDto createSenderShipmentDto) {
-        Contact contact=contactService.findById(createSenderShipmentDto.getSenderContactId());
-        Package packages=packageService.findById(createSenderShipmentDto.getPackageId());
-        Location location=locationService.findById(createSenderShipmentDto.getLocationId());
-        DeliveryReceipt deliveryReceipt=deliveryReceiptService.findById(createSenderShipmentDto.getDeliveryReceiptId());
-        if(contact == null){
-            throw new RuntimeException(SENDER_NOT_FOUND);
-        }
-        Shipments shipment=shipmentMapper.createSenderShipmentFromCreateReceiverShipmentDto(createSenderShipmentDto);
-        shipment.setSenderContact(contact);
-        shipment.setPackages(packages);
-        shipment.setLocation(location);
-        shipment.setDeliveryReceipt(deliveryReceipt);
-        shipmentRepository.saveAndFlush(shipment);
-    }
-
-    @Override
-    public List<SenderShipmentListiningDto> getSenderShipmentAll() {
-        List<Shipments> shipments=shipmentRepository.findAll();
-        return shipments.stream().map(shipmentMapper::toSenderShipmentListiningDto).filter(dto->dto.getSenderContactId() !=null).collect(Collectors.toList());
-    }
-
-    @Override
-    public Shipments updateSenderShipment(UpdateSenderShipmentDto updateSenderShipmentDto) {
-        Contact contact=contactService.findById(updateSenderShipmentDto.getSenderContactId());
-        Location location=locationService.findById(updateSenderShipmentDto.getLocationId());
-        DeliveryReceipt deliveryReceipt=deliveryReceiptService.findById(updateSenderShipmentDto.getDeliveryReceiptId());
-        Shipments shipments=shipmentRepository.findById(updateSenderShipmentDto.getId()).orElseThrow(()-> new RuntimeException(SENDER_NOT_FOUND));
-        Package packages=packageService.findById(updateSenderShipmentDto.getPackageId());
-        shipmentMapper.updateSenderShipmentFromUpdateReceiverShipmentDto(updateSenderShipmentDto,shipments);
-        shipments.setSenderContact(contact);
-        shipments.setLocation(location);
-        shipments.setDeliveryReceipt(deliveryReceipt);
-        shipments.setPackages(packages);
-        return shipments;
-    }
-
-    @Override
-    public void deleteSenderShipment(DeleteSenderShipmentDto deleteSenderShipmentDto) {
-        Contact contact=contactService.findById(deleteSenderShipmentDto.getSenderContactId());
-        if(contact ==null){
-            throw new RuntimeException(SENDER_NOT_FOUND);
-        }
-        Shipments shipment=shipmentRepository.findById(deleteSenderShipmentDto.getId()).orElseThrow(()-> new RuntimeException(SHIPMENT_TYPE_NOT_FOUND));
-        shipmentRepository.delete(shipment);
     }
 }

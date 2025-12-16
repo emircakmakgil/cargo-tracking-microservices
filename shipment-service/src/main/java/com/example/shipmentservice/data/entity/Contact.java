@@ -49,7 +49,4 @@ public class Contact extends AbstractEntity {
     // İleride user service eklendiğinde kullanılacak
     @Column(name = "USER_ID", nullable = true)
     private String userId; // User service'den gelecek user ID (opsiyonel)
-
-    private UUID sender;
-    private UUID receiver;
 }
