@@ -1,4 +1,4 @@
-package com.example.shipmentservice.data.dto.ShipmentDto.ReceiverDto;
+package com.example.shipmentservice.data.dto.ShipmentDto;
 
 import com.example.shipmentservice.model.enums.ShipmentLifecycleStatus;
 import lombok.Getter;
@@ -9,7 +9,7 @@ import java.util.UUID;
 
 @Getter
 @Setter
-public class CreateReceiverShipmentDto {
+public class CreateShipmentDto {
     
     private String trackingNumber;
     
@@ -19,6 +19,8 @@ public class CreateReceiverShipmentDto {
 
 
     private UUID receiverContactId;
+    private UUID senderContactId;
+
 
     private UUID serviceTypeId;
 
