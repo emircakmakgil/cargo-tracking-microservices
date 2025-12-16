@@ -1,6 +1,5 @@
 package com.example.shipmentservice.controller;
 
-import com.example.shipmentservice.data.dto.AddressDto.AddressListiningDto;
 import com.example.shipmentservice.data.dto.ContactDto.ContactListiningDto;
 import com.example.shipmentservice.data.dto.ContactDto.CreateContactDto;
 import com.example.shipmentservice.data.dto.ContactDto.DeleteContactDto;

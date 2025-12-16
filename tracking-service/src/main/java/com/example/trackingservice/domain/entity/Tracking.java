@@ -29,7 +29,7 @@ import java.util.UUID;
 @Builder
 public class Tracking extends AbstractEntity {
 
-    @Column(name = "SHIPMENT_ID", nullable = false, updatable = false)
+    @Column(name = "SHIPMENT_ID", updatable = false)
     private UUID shipmentId;
 
     @Enumerated(EnumType.STRING)

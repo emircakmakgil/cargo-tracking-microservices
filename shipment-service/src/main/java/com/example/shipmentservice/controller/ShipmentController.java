@@ -91,8 +91,8 @@ public class ShipmentController {
                     )
             )
     })
-    @GetMapping(("/get-receivers-shipments"))
-    public List<ShipmentListiningDto> getReceiverShipment(@RequestParam UUID id) {
+    @GetMapping(("/get-shipments/{id}"))
+    public List<ShipmentListiningDto> getReceiverShipment(@PathVariable UUID id) {
         return shipmentService.getReceiverShipment(id);
     }
 }
