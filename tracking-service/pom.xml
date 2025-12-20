@@ -88,7 +88,11 @@
             <artifactId>spring-cloud-starter-openfeign</artifactId>
             <version>4.2.1</version>
         </dependency>
-
+        <dependency>
+            <groupId>io.github.emircakmakgil</groupId>
+            <artifactId>common-cargo-trace</artifactId>
+            <version>0.0.2</version>
+        </dependency>
 
         <dependency>
             <groupId>org.springframework.boot</groupId>

@@ -23,6 +23,15 @@ services:
     volumes:
       - pg2_data:/var/lib/postgresql/data
 
+  shipment-service:
+    image: turkcell-shipment-service
+    container_name: shipment_service
+    ports:
+      - "8083:8083"
+    environment:
+      SPRING_DATASOURCE_UR: "jdbc:postgresql://pg-2:5432/shipment-service"
+
+
   kafka:
     image: apache/kafka:3.7.0
     container_name: kafka
